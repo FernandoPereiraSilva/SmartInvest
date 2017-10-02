@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.bson.types.ObjectId;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Cleaner;
@@ -23,40 +22,40 @@ import Dao.StockDao;
 import Util.Criteria;
 
 /** Esta classe serve para tratar os dados das acoes */
-@MongoClass(className = "Stock")
+@MongoClass(className = "stocks")
 public class Stock {
 
     /** Atributos */
     @MongoField(fieldName = "_id")
-    private ObjectId                id;
+    private String                  id;
 
-    @MongoField(fieldName = "papel")
-    private String                  papel;
+    @MongoField(fieldName = "paper")
+    private String                  paper;
 
-    @MongoField(fieldName = "tipo")
-    private String                  tipo;
+    @MongoField(fieldName = "type")
+    private String                  type;
 
-    @MongoField(fieldName = "empresa")
-    private String                  empresa;
+    @MongoField(fieldName = "company")
+    private String                  company;
 
-    @MongoField(fieldName = "setor")
-    private String                  setor;
+    @MongoField(fieldName = "sector")
+    private String                  sector;
 
-    @MongoField(fieldName = "subsetor")
-    private String                  subsetor;
+    @MongoField(fieldName = "subSector")
+    private String                  subSector;
 
     private double                  points;
 
     private ArrayList<StockHistory> stockHistory;
 
     /** Metodos contrutores */
-    public Stock(ObjectId id, String papel, String tipo, String empresa, String setor, String subsetor, int points, ArrayList<StockHistory> stockHistory) {
+    public Stock(String id, String paper, String type, String company, String sector, String subSector, int points, ArrayList<StockHistory> stockHistory) {
         setId(id);
-        setPapel(papel);
-        setTipo(tipo);
-        setEmpresa(empresa);
-        setSetor(setor);
-        setSubsetor(subsetor);
+        setPaper(paper);
+        setType(type);
+        setCompany(company);
+        setSector(sector);
+        setSubSector(subSector);
         setPoints(points);
         setStockHistory(stockHistory);
     }
@@ -66,33 +65,33 @@ public class Stock {
 
     /** Metodos modificadores */
     @MongoMethodSet(fieldName = "_id")
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    @MongoMethodSet(fieldName = "papel")
-    public void setPapel(String papel) {
-        this.papel = papel;
+    @MongoMethodSet(fieldName = "paper")
+    public void setPaper(String paper) {
+        this.paper = paper;
     }
 
-    @MongoMethodSet(fieldName = "tipo")
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    @MongoMethodSet(fieldName = "type")
+    public void setType(String type) {
+        this.type = type;
     }
 
-    @MongoMethodSet(fieldName = "empresa")
-    public void setEmpresa(String empresa) {
-        this.empresa = empresa;
+    @MongoMethodSet(fieldName = "company")
+    public void setCompany(String company) {
+        this.company = company;
     }
 
-    @MongoMethodSet(fieldName = "setor")
-    public void setSetor(String setor) {
-        this.setor = setor;
+    @MongoMethodSet(fieldName = "sector")
+    public void setSector(String sector) {
+        this.sector = sector;
     }
 
-    @MongoMethodSet(fieldName = "subsetor")
-    public void setSubsetor(String subsetor) {
-        this.subsetor = subsetor;
+    @MongoMethodSet(fieldName = "subSector")
+    public void setSubSector(String subSector) {
+        this.subSector = subSector;
     }
 
     public void setPoints(double points) {
@@ -105,33 +104,33 @@ public class Stock {
 
     /** Metodos de retorno */
     @MongoMethodGet(fieldName = "_id")
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
-    @MongoMethodGet(fieldName = "papel")
-    public String getPapel() {
-        return papel;
+    @MongoMethodGet(fieldName = "paper")
+    public String getPaper() {
+        return paper;
     }
 
-    @MongoMethodGet(fieldName = "tipo")
-    public String getTipo() {
-        return tipo;
+    @MongoMethodGet(fieldName = "type")
+    public String getType() {
+        return type;
     }
 
-    @MongoMethodGet(fieldName = "empresa")
-    public String getEmpresa() {
-        return empresa;
+    @MongoMethodGet(fieldName = "company")
+    public String getCompany() {
+        return company;
     }
 
-    @MongoMethodGet(fieldName = "setor")
-    public String getSetor() {
-        return setor;
+    @MongoMethodGet(fieldName = "sector")
+    public String getSector() {
+        return sector;
     }
 
-    @MongoMethodGet(fieldName = "subsetor")
-    public String getSubsetor() {
-        return subsetor;
+    @MongoMethodGet(fieldName = "subSector")
+    public String getSubSector() {
+        return subSector;
     }
 
     public double getPoints() {
@@ -188,7 +187,7 @@ public class Stock {
         // Cria um criterio para consulta
         Criteria criteriaStock = new Criteria();
         // Insere este papel para consulta
-        criteriaStock.addCriteria("papel", this, "getPapel");
+        criteriaStock.addCriteria("papel", this, "getPaper");
         // Pega todas as acoes que tenham determinados dados
         ArrayList<Stock> arrayListStock = StockDao.select(criteriaStock);
         // Verifica se esta acao ja existe
@@ -312,11 +311,11 @@ public class Stock {
             // segundo metodo e passado os parametros: nome do metodo modificador; nome do metodo que vai formatar o valor
             // recebido; o tipo do atributo, string, int, long, etc... tambem e passado o nome da classe responsavel por
             // tratar estas informacoes, Stock ou StockHistory
-            map.put("Papel", mappingAttributesAux("setPapel", "dataToString", Stock.class, String.class));
-            map.put("Tipo", mappingAttributesAux("setTipo", "dataToString", Stock.class, String.class));
-            map.put("Empresa", mappingAttributesAux("setEmpresa", "dataToString", Stock.class, String.class));
-            map.put("Setor", mappingAttributesAux("setSetor", "dataToString", Stock.class, String.class));
-            map.put("Subsetor", mappingAttributesAux("setSubsetor", "dataToString", Stock.class, String.class));
+            map.put("Papel", mappingAttributesAux("setPaper", "dataToString", Stock.class, String.class));
+            map.put("Tipo", mappingAttributesAux("setType", "dataToString", Stock.class, String.class));
+            map.put("Empresa", mappingAttributesAux("setCompany", "dataToString", Stock.class, String.class));
+            map.put("Setor", mappingAttributesAux("setSector", "dataToString", Stock.class, String.class));
+            map.put("Subsetor", mappingAttributesAux("setSubSector", "dataToString", Stock.class, String.class));
             map.put("Valor de mercado", mappingAttributesAux("setValorDeMercado", "dataToLong", StockHistory.class, Long.class));
             map.put("Valor da firma", mappingAttributesAux("setValorDaFirma", "dataToLong", StockHistory.class, Long.class));
             map.put("Cotação", mappingAttributesAux("setCotacao", "dataToDouble", StockHistory.class, Double.class));

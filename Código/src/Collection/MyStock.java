@@ -3,8 +3,6 @@ package Collection;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.bson.types.ObjectId;
-
 import Annotation.MongoClass;
 import Annotation.MongoField;
 import Annotation.MongoMethodGet;
@@ -18,27 +16,31 @@ public class MyStock {
 
     /** Atributos */
     @MongoField(fieldName = "_id")
-    private ObjectId id;
+    private String id;
 
     @MongoField(fieldName = "idStock")
-    private ObjectId idStock;
+    private String idStock;
 
     @MongoField(fieldName = "idAccount")
-    private ObjectId idAccount;
+    private String idAccount;
 
     @MongoField(fieldName = "quantity")
-    private Long     quantity;
+    private Long   quantity;
 
-    @MongoField(fieldName = "dateOfAlteration")
-    private Date     dateOfAlteration;
+    @MongoField(fieldName = "dateBuy")
+    private Date   dateBuy;
+
+    @MongoField(fieldName = "dateSell")
+    private Date   dateSell;
 
     /** Metodos contrutores */
-    public MyStock(ObjectId id, ObjectId idStock, ObjectId idAccount, Long quantity, Date dateOfAlteration) {
+    public MyStock(String id, String idStock, String idAccount, Long quantity, Date dateBuy, Date dateSell) {
         setId(id);
         setIdStock(idStock);
         setIdAccount(idAccount);
         setQuantity(quantity);
-        setDateOfAlteration(dateOfAlteration);
+        setDateBuy(dateBuy);
+        setDateSell(dateSell);
     }
 
     public MyStock() {
@@ -46,17 +48,17 @@ public class MyStock {
 
     /** Metodos modificadores */
     @MongoMethodSet(fieldName = "_id")
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @MongoMethodSet(fieldName = "idStock")
-    public void setIdStock(ObjectId idStock) {
+    public void setIdStock(String idStock) {
         this.idStock = idStock;
     }
 
     @MongoMethodSet(fieldName = "idAccount")
-    public void setIdAccount(ObjectId idAccount) {
+    public void setIdAccount(String idAccount) {
         this.idAccount = idAccount;
     }
 
@@ -65,24 +67,29 @@ public class MyStock {
         this.quantity = quantity;
     }
 
-    @MongoMethodSet(fieldName = "dateOfAlteration")
-    public void setDateOfAlteration(Date dateOfAlteration) {
-        this.dateOfAlteration = dateOfAlteration;
+    @MongoMethodSet(fieldName = "dateBuy")
+    public void setDateBuy(Date dateBuy) {
+        this.dateBuy = dateBuy;
+    }
+
+    @MongoMethodSet(fieldName = "dateSell")
+    public void setDateSell(Date dateSell) {
+        this.dateSell = dateSell;
     }
 
     /** Metodos de retorno */
     @MongoMethodGet(fieldName = "_id")
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
     @MongoMethodGet(fieldName = "idStock")
-    public ObjectId getIdStock() {
+    public String getIdStock() {
         return idStock;
     }
 
     @MongoMethodGet(fieldName = "idAccount")
-    public ObjectId getIdAccount() {
+    public String getIdAccount() {
         return idAccount;
     }
 
@@ -91,9 +98,14 @@ public class MyStock {
         return quantity;
     }
 
-    @MongoMethodGet(fieldName = "dateOfAlteration")
-    public Date getDateOfAlteration() {
-        return dateOfAlteration;
+    @MongoMethodGet(fieldName = "dateBuy")
+    public Date getDateBuy() {
+        return dateBuy;
+    }
+
+    @MongoMethodGet(fieldName = "dateSell")
+    public Date getDateSell() {
+        return dateSell;
     }
 
     /** Metodos DAO */
@@ -109,7 +121,12 @@ public class MyStock {
         return MyStockDao.select(criteria);
     }
 
-    // Este metodo tem como funcao deletar esta relacao no banco de dados
+    // Este metodo tem como funcao alterar esta relacao no banco de dados
+    public void update() throws Exception {
+        // Altera este registro de compra no banco de dados
+        MyStockDao.update(this);
+    }
+
     public void delete() throws Exception {
         // Deleta este registro de compra no banco de dados
         MyStockDao.delete(this);

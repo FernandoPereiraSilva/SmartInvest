@@ -30,6 +30,12 @@ public class MyStockDao extends GenericDao {
         return arrayListStock;
     }
 
+    // Este metodo tem como funcao alterar uma acao comprada
+    public static void update(MyStock myStock) throws Exception {
+        // Pega a colecao "MyStock" e faz um update
+        update(MyStock.class, myStock);
+    }
+
     // Este metodo tem como funcao deletar uma acao comprada
     public static void delete(MyStock myStock) throws Exception {
         // Pega a colecao "MyStock" e faz um delete

@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.bson.types.ObjectId;
-
 import Annotation.MongoClass;
 import Annotation.MongoField;
 import Annotation.MongoMethodGet;
@@ -17,149 +15,149 @@ import Dao.StockHistoryDao;
 import Util.Criteria;
 
 /** Esta classe serve para tratar os dados das acoes */
-@MongoClass(className = "StockHistory")
+@MongoClass(className = "stockHistory")
 public class StockHistory {
 
     /** Atributos */
     @MongoField(fieldName = "_id")
-    private ObjectId id;
+    private String id;
 
     @MongoField(fieldName = "idStock")
-    private ObjectId idStock;
+    private String idStock;
 
     @MongoField(fieldName = "valorDeMercado")
-    private Long     valorDeMercado;
+    private Long   valorDeMercado;
 
     @MongoField(fieldName = "valorDaFirma")
-    private Long     valorDaFirma;
+    private Long   valorDaFirma;
 
     @MongoField(fieldName = "volumeMedio")
-    private Long     volumeMedio;
+    private Long   volumeMedio;
 
     @MongoField(fieldName = "numeroDeAcoes")
-    private Long     numeroDeAcoes;
+    private Long   numeroDeAcoes;
 
     @MongoField(fieldName = "ativo")
-    private Long     ativo;
+    private Long   ativo;
 
     @MongoField(fieldName = "disponibilidades")
-    private Long     disponibilidades;
+    private Long   disponibilidades;
 
     @MongoField(fieldName = "ativoCirculante")
-    private Long     ativoCirculante;
+    private Long   ativoCirculante;
 
     @MongoField(fieldName = "divBruta")
-    private Long     divBruta;
+    private Long   divBruta;
 
     @MongoField(fieldName = "divLiquida")
-    private Long     divLiquida;
+    private Long   divLiquida;
 
     @MongoField(fieldName = "patrimLiq")
-    private Long     patrimLiq;
+    private Long   patrimLiq;
 
     @MongoField(fieldName = "receitaLiquida12")
-    private Long     receitaLiquida12;
+    private Long   receitaLiquida12;
 
     @MongoField(fieldName = "receitaLiquida3")
-    private Long     receitaLiquida3;
+    private Long   receitaLiquida3;
 
     @MongoField(fieldName = "ebit12")
-    private Long     ebit12;
+    private Long   ebit12;
 
     @MongoField(fieldName = "ebit3")
-    private Long     ebit3;
+    private Long   ebit3;
 
     @MongoField(fieldName = "lucroLiquido12")
-    private Long     lucroLiquido12;
+    private Long   lucroLiquido12;
 
     @MongoField(fieldName = "lucroLiquido3")
-    private Long     lucroLiquido3;
+    private Long   lucroLiquido3;
 
     @MongoField(fieldName = "cotacao")
-    private Double   cotacao;
+    private Double cotacao;
 
     @MongoField(fieldName = "minimo52Sem")
-    private Double   minimo52Sem;
+    private Double minimo52Sem;
 
     @MongoField(fieldName = "maximo52Sem")
-    private Double   maximo52Sem;
+    private Double maximo52Sem;
 
     @MongoField(fieldName = "pL")
-    private Double   pL;
+    private Double pL;
 
     @MongoField(fieldName = "pVP")
-    private Double   pVP;
+    private Double pVP;
 
     @MongoField(fieldName = "pEBIT")
-    private Double   pEBIT;
+    private Double pEBIT;
 
     @MongoField(fieldName = "pSR")
-    private Double   pSR;
+    private Double pSR;
 
     @MongoField(fieldName = "pAtivos")
-    private Double   pAtivos;
+    private Double pAtivos;
 
     @MongoField(fieldName = "pCapGiro")
-    private Double   pCapGiro;
+    private Double pCapGiro;
 
     @MongoField(fieldName = "evEbit")
-    private Double   evEbit;
+    private Double evEbit;
 
     @MongoField(fieldName = "giroAtivos")
-    private Double   giroAtivos;
+    private Double giroAtivos;
 
     @MongoField(fieldName = "lPA")
-    private Double   lPA;
+    private Double lPA;
 
     @MongoField(fieldName = "vPA")
-    private Double   vPA;
+    private Double vPA;
 
     @MongoField(fieldName = "liquidezCorr")
-    private Double   liquidezCorr;
+    private Double liquidezCorr;
 
     @MongoField(fieldName = "divBrPatrim")
-    private Double   divBrPatrim;
+    private Double divBrPatrim;
 
     @MongoField(fieldName = "dataDaUltimaCotacao")
-    private Date     dataDaUltimaCotacao;
+    private Date   dataDaUltimaCotacao;
 
     @MongoField(fieldName = "ultimoBalancoProcessado")
-    private Date     ultimoBalancoProcessado;
+    private Date   ultimoBalancoProcessado;
 
     @MongoField(fieldName = "pAtivCircLiq")
-    private Double   pAtivCircLiq;
+    private Double pAtivCircLiq;
 
     @MongoField(fieldName = "divYield")
-    private Double   divYield;
+    private Double divYield;
 
     @MongoField(fieldName = "cresRec")
-    private Double   cresRec;
+    private Double cresRec;
 
     @MongoField(fieldName = "margBruta")
-    private Double   margBruta;
+    private Double margBruta;
 
     @MongoField(fieldName = "margEbit")
-    private Double   margEbit;
+    private Double margEbit;
 
     @MongoField(fieldName = "margLiquida")
-    private Double   margLiquida;
+    private Double margLiquida;
 
     @MongoField(fieldName = "ebitAtivo")
-    private Double   ebitAtivo;
+    private Double ebitAtivo;
 
     @MongoField(fieldName = "roic")
-    private Double   roic;
+    private Double roic;
 
     @MongoField(fieldName = "roe")
-    private Double   roe;
+    private Double roe;
 
     @MongoField(fieldName = "points")
-    private Double   points;
+    private Double points;
 
-    private Double   velocity;
+    private Double velocity;
 
     /** Metodos contrutores */
-    public StockHistory(ObjectId id, ObjectId idStock, String papel, String tipo, String empresa, String setor, String subsetor, Long valorDeMercado, Long valorDaFirma, Long volumeMedio, Long numeroDeAcoes, Long ativo, Long disponibilidades, Long ativoCirculante, Long divBruta, Long divLiquida, Long patrimLiq, Long receitaLiquida12, Long receitaLiquida3, Long ebit12, Long ebit3, Long lucroLiquido12, Long lucroLiquido3, Double cotacao, Double minimo52Sem, Double maximo52Sem, Double pL, Double pVP, Double pEBIT, Double pSR, Double pAtivos, Double pCapGiro, Double evEbit, Double giroAtivos, Double lPA, Double vPA, Double liquidezCorr, Double divBrPatrim, Date dataDaUltimaCotacao, Date ultimoBalancoProcessado, Double pAtivCircLiq, Double divYield, Double cresRec, Double margBruta, Double margEbit, Double margLiquida, Double ebitAtivo, Double roic, Double roe) {
+    public StockHistory(String id, String idStock, String papel, String tipo, String empresa, String setor, String subsetor, Long valorDeMercado, Long valorDaFirma, Long volumeMedio, Long numeroDeAcoes, Long ativo, Long disponibilidades, Long ativoCirculante, Long divBruta, Long divLiquida, Long patrimLiq, Long receitaLiquida12, Long receitaLiquida3, Long ebit12, Long ebit3, Long lucroLiquido12, Long lucroLiquido3, Double cotacao, Double minimo52Sem, Double maximo52Sem, Double pL, Double pVP, Double pEBIT, Double pSR, Double pAtivos, Double pCapGiro, Double evEbit, Double giroAtivos, Double lPA, Double vPA, Double liquidezCorr, Double divBrPatrim, Date dataDaUltimaCotacao, Date ultimoBalancoProcessado, Double pAtivCircLiq, Double divYield, Double cresRec, Double margBruta, Double margEbit, Double margLiquida, Double ebitAtivo, Double roic, Double roe) {
         setId(id);
         setIdStock(idStock);
         setValorDeMercado(valorDeMercado);
@@ -211,12 +209,12 @@ public class StockHistory {
 
     /** Metodos modificadores */
     @MongoMethodSet(fieldName = "_id")
-    public void setId(ObjectId id) {
+    public void setId(String id) {
         this.id = id;
     }
 
     @MongoMethodSet(fieldName = "idStock")
-    public void setIdStock(ObjectId idStock) {
+    public void setIdStock(String idStock) {
         this.idStock = idStock;
     }
 
@@ -441,12 +439,12 @@ public class StockHistory {
 
     /** Metodos de retorno */
     @MongoMethodGet(fieldName = "_id")
-    public ObjectId getId() {
+    public String getId() {
         return id;
     }
 
     @MongoMethodGet(fieldName = "idStock")
-    public ObjectId getIdStock() {
+    public String getIdStock() {
         return idStock;
     }
 
@@ -889,66 +887,278 @@ public class StockHistory {
     }
 
     @Override
-    // Este metodo tem como funcao verificar se determinado objeto e o mesmo que este objeto
     public boolean equals(Object obj) {
-        // Cria um objeto para armazenar todas as validacoes
-        boolean equals = true;
-        // Verifica se o objeto e o mesmo ou se esta vazio
-        equals = equals && (this == obj);
-        equals = equals && (obj != null);
-        equals = equals && (getClass() == obj.getClass());
-        // Verifica se algum resultado deu falso
-        if(!equals) {
-            // Se deu significa que nao e o mesmo objeto, entao retorna falso
-            return equals;
-        }
-        // Se for verdadeiro signifa que pode realizar a seguinte conversao sem dar erro
+        if(this == obj)
+            return true;
+        if(obj == null)
+            return false;
+        if(getClass() != obj.getClass())
+            return false;
         StockHistory other = (StockHistory) obj;
-        equals = equals && (getAtivo() == other.getAtivo());
-        equals = equals && (getAtivoCirculante() == other.getAtivoCirculante());
-        equals = equals && (getCotacao() == other.getCotacao());
-        equals = equals && (getCresRec() == other.getCresRec());
-        equals = equals && ((getDataDaUltimaCotacao() == null)) ? (other.getDataDaUltimaCotacao() == null) : (getDataDaUltimaCotacao().equals(other.getDataDaUltimaCotacao()));
-        equals = equals && (getDisponibilidades() == other.getDisponibilidades());
-        equals = equals && (getDivBrPatrim() == other.getDivBrPatrim());
-        equals = equals && (getDivBruta() == other.getDivBruta());
-        equals = equals && (getDivLiquida() == other.getDivLiquida());
-        equals = equals && (getDivYield() == other.getDivYield());
-        equals = equals && (getEbit12() == other.getEbit12());
-        equals = equals && (getEbit3() == other.getEbit3());
-        equals = equals && (getEbitAtivo() == other.getEbitAtivo());
-        equals = equals && (getEvEbit() == other.getEvEbit());
-        equals = equals && (getGiroAtivos() == other.getGiroAtivos());
-        equals = equals && (getlPA() == other.getlPA());
-        equals = equals && (getLiquidezCorr() == other.getLiquidezCorr());
-        equals = equals && (getLucroLiquido12() == other.getLucroLiquido12());
-        equals = equals && (getLucroLiquido3() == other.getLucroLiquido3());
-        equals = equals && (getMargBruta() == other.getMargBruta());
-        equals = equals && (getMargEbit() == other.getMargEbit());
-        equals = equals && (getMargLiquida() == other.getMargLiquida());
-        equals = equals && (getMaximo52Sem() == other.getMaximo52Sem());
-        equals = equals && (getMinimo52Sem() == other.getMinimo52Sem());
-        equals = equals && (getNumeroDeAcoes() == other.getNumeroDeAcoes());
-        equals = equals && (getpAtivCircLiq() == other.getpAtivCircLiq());
-        equals = equals && (getpAtivos() == other.getpAtivos());
-        equals = equals && (getpCapGiro() == other.getpCapGiro());
-        equals = equals && (getpEBIT() == other.getpEBIT());
-        equals = equals && (getpL() == other.getpL());
-        equals = equals && (getpSR() == other.getpSR());
-        equals = equals && (getpVP() == other.getpVP());
-        equals = equals && (getPatrimLiq() == other.getPatrimLiq());
-        equals = equals && (getReceitaLiquida12() == other.getReceitaLiquida12());
-        equals = equals && (getReceitaLiquida3() == other.getReceitaLiquida3());
-        equals = equals && (getRoe() == other.getRoe());
-        equals = equals && (getRoic() == other.getRoic());
-        equals = equals && ((getUltimoBalancoProcessado() == null) ? (other.getUltimoBalancoProcessado() == null) : getUltimoBalancoProcessado().equals(other.getUltimoBalancoProcessado()));
-        equals = equals && (getvPA() == other.getvPA());
-        equals = equals && (getValorDaFirma() == other.getValorDaFirma());
-        equals = equals && (getValorDeMercado() == other.getValorDeMercado());
-        equals = equals && (getVolumeMedio() == other.getVolumeMedio());
-        // Se retornar verdadeiro significa que todos os atributos sao iguais, se retornar falso significa que ocorreu uma alteracao
-        // entao e um novo historico
-        return equals;
+        if(ativo == null) {
+            if(other.ativo != null)
+                return false;
+        }
+        else if(!ativo.equals(other.ativo))
+            return false;
+        if(ativoCirculante == null) {
+            if(other.ativoCirculante != null)
+                return false;
+        }
+        else if(!ativoCirculante.equals(other.ativoCirculante))
+            return false;
+        if(cotacao == null) {
+            if(other.cotacao != null)
+                return false;
+        }
+        else if(!cotacao.equals(other.cotacao))
+            return false;
+        if(cresRec == null) {
+            if(other.cresRec != null)
+                return false;
+        }
+        else if(!cresRec.equals(other.cresRec))
+            return false;
+        if(dataDaUltimaCotacao == null) {
+            if(other.dataDaUltimaCotacao != null)
+                return false;
+        }
+        else if(!dataDaUltimaCotacao.equals(other.dataDaUltimaCotacao))
+            return false;
+        if(disponibilidades == null) {
+            if(other.disponibilidades != null)
+                return false;
+        }
+        else if(!disponibilidades.equals(other.disponibilidades))
+            return false;
+        if(divBrPatrim == null) {
+            if(other.divBrPatrim != null)
+                return false;
+        }
+        else if(!divBrPatrim.equals(other.divBrPatrim))
+            return false;
+        if(divBruta == null) {
+            if(other.divBruta != null)
+                return false;
+        }
+        else if(!divBruta.equals(other.divBruta))
+            return false;
+        if(divLiquida == null) {
+            if(other.divLiquida != null)
+                return false;
+        }
+        else if(!divLiquida.equals(other.divLiquida))
+            return false;
+        if(divYield == null) {
+            if(other.divYield != null)
+                return false;
+        }
+        else if(!divYield.equals(other.divYield))
+            return false;
+        if(ebit12 == null) {
+            if(other.ebit12 != null)
+                return false;
+        }
+        else if(!ebit12.equals(other.ebit12))
+            return false;
+        if(ebit3 == null) {
+            if(other.ebit3 != null)
+                return false;
+        }
+        else if(!ebit3.equals(other.ebit3))
+            return false;
+        if(ebitAtivo == null) {
+            if(other.ebitAtivo != null)
+                return false;
+        }
+        else if(!ebitAtivo.equals(other.ebitAtivo))
+            return false;
+        if(evEbit == null) {
+            if(other.evEbit != null)
+                return false;
+        }
+        else if(!evEbit.equals(other.evEbit))
+            return false;
+        if(giroAtivos == null) {
+            if(other.giroAtivos != null)
+                return false;
+        }
+        else if(!giroAtivos.equals(other.giroAtivos))
+            return false;
+        if(idStock == null) {
+            if(other.idStock != null)
+                return false;
+        }
+        else if(!idStock.equals(other.idStock))
+            return false;
+        if(lPA == null) {
+            if(other.lPA != null)
+                return false;
+        }
+        else if(!lPA.equals(other.lPA))
+            return false;
+        if(liquidezCorr == null) {
+            if(other.liquidezCorr != null)
+                return false;
+        }
+        else if(!liquidezCorr.equals(other.liquidezCorr))
+            return false;
+        if(lucroLiquido12 == null) {
+            if(other.lucroLiquido12 != null)
+                return false;
+        }
+        else if(!lucroLiquido12.equals(other.lucroLiquido12))
+            return false;
+        if(lucroLiquido3 == null) {
+            if(other.lucroLiquido3 != null)
+                return false;
+        }
+        else if(!lucroLiquido3.equals(other.lucroLiquido3))
+            return false;
+        if(margBruta == null) {
+            if(other.margBruta != null)
+                return false;
+        }
+        else if(!margBruta.equals(other.margBruta))
+            return false;
+        if(margEbit == null) {
+            if(other.margEbit != null)
+                return false;
+        }
+        else if(!margEbit.equals(other.margEbit))
+            return false;
+        if(margLiquida == null) {
+            if(other.margLiquida != null)
+                return false;
+        }
+        else if(!margLiquida.equals(other.margLiquida))
+            return false;
+        if(maximo52Sem == null) {
+            if(other.maximo52Sem != null)
+                return false;
+        }
+        else if(!maximo52Sem.equals(other.maximo52Sem))
+            return false;
+        if(minimo52Sem == null) {
+            if(other.minimo52Sem != null)
+                return false;
+        }
+        else if(!minimo52Sem.equals(other.minimo52Sem))
+            return false;
+        if(numeroDeAcoes == null) {
+            if(other.numeroDeAcoes != null)
+                return false;
+        }
+        else if(!numeroDeAcoes.equals(other.numeroDeAcoes))
+            return false;
+        if(pAtivCircLiq == null) {
+            if(other.pAtivCircLiq != null)
+                return false;
+        }
+        else if(!pAtivCircLiq.equals(other.pAtivCircLiq))
+            return false;
+        if(pAtivos == null) {
+            if(other.pAtivos != null)
+                return false;
+        }
+        else if(!pAtivos.equals(other.pAtivos))
+            return false;
+        if(pCapGiro == null) {
+            if(other.pCapGiro != null)
+                return false;
+        }
+        else if(!pCapGiro.equals(other.pCapGiro))
+            return false;
+        if(pEBIT == null) {
+            if(other.pEBIT != null)
+                return false;
+        }
+        else if(!pEBIT.equals(other.pEBIT))
+            return false;
+        if(pL == null) {
+            if(other.pL != null)
+                return false;
+        }
+        else if(!pL.equals(other.pL))
+            return false;
+        if(pSR == null) {
+            if(other.pSR != null)
+                return false;
+        }
+        else if(!pSR.equals(other.pSR))
+            return false;
+        if(pVP == null) {
+            if(other.pVP != null)
+                return false;
+        }
+        else if(!pVP.equals(other.pVP))
+            return false;
+        if(patrimLiq == null) {
+            if(other.patrimLiq != null)
+                return false;
+        }
+        else if(!patrimLiq.equals(other.patrimLiq))
+            return false;
+        if(receitaLiquida12 == null) {
+            if(other.receitaLiquida12 != null)
+                return false;
+        }
+        else if(!receitaLiquida12.equals(other.receitaLiquida12))
+            return false;
+        if(receitaLiquida3 == null) {
+            if(other.receitaLiquida3 != null)
+                return false;
+        }
+        else if(!receitaLiquida3.equals(other.receitaLiquida3))
+            return false;
+        if(roe == null) {
+            if(other.roe != null)
+                return false;
+        }
+        else if(!roe.equals(other.roe))
+            return false;
+        if(roic == null) {
+            if(other.roic != null)
+                return false;
+        }
+        else if(!roic.equals(other.roic))
+            return false;
+        if(ultimoBalancoProcessado == null) {
+            if(other.ultimoBalancoProcessado != null)
+                return false;
+        }
+        else if(!ultimoBalancoProcessado.equals(other.ultimoBalancoProcessado))
+            return false;
+        if(vPA == null) {
+            if(other.vPA != null)
+                return false;
+        }
+        else if(!vPA.equals(other.vPA))
+            return false;
+        if(valorDaFirma == null) {
+            if(other.valorDaFirma != null)
+                return false;
+        }
+        else if(!valorDaFirma.equals(other.valorDaFirma))
+            return false;
+        if(valorDeMercado == null) {
+            if(other.valorDeMercado != null)
+                return false;
+        }
+        else if(!valorDeMercado.equals(other.valorDeMercado))
+            return false;
+        if(velocity == null) {
+            if(other.velocity != null)
+                return false;
+        }
+        else if(!velocity.equals(other.velocity))
+            return false;
+        if(volumeMedio == null) {
+            if(other.volumeMedio != null)
+                return false;
+        }
+        else if(!volumeMedio.equals(other.volumeMedio))
+            return false;
+        return true;
     }
-
 }

@@ -25,7 +25,7 @@ public class Simulation {
         setCash(Config.getStartingCash());
         setTradeHistory(new ArrayList<String>());
         setShares(new HashMap<Object, Object>());
-        getShares().put(stock.getPapel(), 0.0);
+        getShares().put(stock.getPaper(), 0.0);
     }
 
     /** Metodos modificadores */
@@ -126,9 +126,9 @@ public class Simulation {
                 // Se foi significa que ocorreu uma negociacao, realiza os calculos para saber a acao de negociacao
                 double tradeAction = Util.formatDecimalScale((((Double) strategy.getParameters().get("buyVolume")) / ((Double) stock.getStockHistory().get(i).getCotacao())) * tradeDirection, 2);
                 // Executa o metodo de negociacao
-                trade(tradeAction, stock.getStockHistory().get(i), stock.getPapel());
+                trade(tradeAction, stock.getStockHistory().get(i), stock.getPaper());
                 // Adiciona ao historico de compras do robo a negociacao
-                getTradeHistory().add(tradeVerb + " " + stock.getPapel() + ". Velocidade em: " + stock.getStockHistory().get(i).getVelocity() + ". Acao: " + tradeAction + ". Data: " + stock.getStockHistory().get(i).getDataDaUltimaCotacao());
+                getTradeHistory().add(tradeVerb + " " + stock.getPaper() + ". Velocidade em: " + stock.getStockHistory().get(i).getVelocity() + ". Acao: " + tradeAction + ". Data: " + stock.getStockHistory().get(i).getDataDaUltimaCotacao());
             }
         }
     }

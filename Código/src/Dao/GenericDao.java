@@ -27,21 +27,21 @@ public class GenericDao {
 
     /** Metodos principais */
     // Este metodo generico tem como funcao inserir um registro
-    protected static ObjectId insert(Class<?> className, Object classForInsert) throws Exception {
+    protected static String insert(Class<?> className, Object classForInsert) throws Exception {
         // Utiliza a refletion para pegar o nome da colecao que esta na anotacao
         String nmCollection = className.getAnnotation(MongoClass.class).className();
         // Cria um objeto de id para retornar
-        ObjectId id = null;
+        String id = new ObjectId().toString();
         // Pega o client que esta no connectionFactory
         MongoClient mongoClient = ConnectionFactory.getClient();
         // Pega o banco de dados que esta no connectionFactory
         MongoDatabase mongoDatabase = ConnectionFactory.getDb(mongoClient);
         // Cria um objeto para poder pegar o _id de retorno
         Document document = new Document(Util.mapToBasicDBOObject(mappingData(classForInsert)));
-        // Pega a colecao "StockHistory" e insere uma acao
+        // Insere o id
+        document.put("_id", id);
+        // Pega a colecao e insere uma acao
         mongoDatabase.getCollection(nmCollection).insertOne(document);
-        // Insere na acao o _id retornado do banco
-        id = (ObjectId) document.get("_id");
         // Fecha o client
         mongoClient.close();
         // Retorna o identificador do objeto inserido

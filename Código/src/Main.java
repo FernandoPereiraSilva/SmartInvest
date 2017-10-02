@@ -12,6 +12,7 @@ public class Main {
 
     /** Metodos principais */
     public static void main(String[] args) throws Exception {
+        System.out.println("Iniciando serviço");
         // Define que o banco de dados so ira exibir logs de erro
         Logger.getLogger("org.mongodb.driver").setLevel(Level.SEVERE);
         // Executa a mineracao de dados
@@ -53,5 +54,6 @@ public class Main {
                 }
             }
         }
+        System.out.println("Encerrando serviço");
     }
 }

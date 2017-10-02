@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 
-import org.bson.types.ObjectId;
-
 import Annotation.MongoClass;
 import Annotation.MongoField;
 import Annotation.MongoMethodGet;
@@ -14,18 +12,18 @@ import Dao.UserDao;
 import Util.Criteria;
 
 /** Esta classe serve para tratar os dados das contas */
-@MongoClass(className = "User")
+@MongoClass(className = "user")
 public class User {
 
     /** Atributos */
     @MongoField(fieldName = "_id")
-    private ObjectId _id;
+    private String _id;
 
     @MongoField(fieldName = "profile")
-    private Map<Object, Object>   profile;
+    private Map<Object, Object> profile;
 
     /** Metodos contrutores */
-    public User(ObjectId _id, Map<Object, Object> profile) {
+    public User(String _id, Map<Object, Object> profile) {
         setId(_id);
         setProfile(profile);
     }
@@ -35,7 +33,7 @@ public class User {
 
     /** Metodos modificadores */
     @MongoMethodSet(fieldName = "_id")
-    public void setId(ObjectId _id) {
+    public void setId(String _id) {
         this._id = _id;
     }
 
@@ -46,7 +44,7 @@ public class User {
 
     /** Metodos de retorno */
     @MongoMethodGet(fieldName = "_id")
-    public ObjectId getId() {
+    public String getId() {
         return _id;
     }
 
@@ -117,14 +115,23 @@ public class User {
         // Verifica se foi feito alguma compra
         if(numberOfTrades > 0) {
             // Se tiver sido significa que pode debitar o salod e cadastrar as novas acoes, entao cria
-            // um objeto contendo os dados da acao comprada
-            MyStock myStock = new MyStock(null, stock.getId(), getId(), numberOfTrades, new Date());
+            // um objeto contendo os dados da acao comprada, informa que a data de compra foi hoje
+            MyStock myStock = new MyStock(null, stock.getId(), getId(), numberOfTrades, new Date(), null);
             // Altera o numero de acoes desta bolsa, informando que agora o saldo e o total menos a quantidade comprada
             stock.getLastStockHistory().setNumeroDeAcoes(stock.getLastStockHistory().getNumeroDeAcoes() - numberOfTrades);
             // Atualiza o historico
             stock.getLastStockHistory().update();
             // Insere o registro das minhas acoes
             myStock.insert();
+            // Cria o historico a ser inserido
+            PurchaseHistory purchaseHistory = new PurchaseHistory();
+            purchaseHistory.setIdAccount(myStock.getIdAccount());
+            purchaseHistory.setIdStock(myStock.getIdStock());
+            purchaseHistory.setPrice(stock.getLastStockHistory().getCotacao());
+            purchaseHistory.setQuantity(myStock.getQuantity());
+            purchaseHistory.setTransactionType(PurchaseHistory.TRANSACTION_TYPE_BUY);
+            // Insere o historico
+            purchaseHistory.insert();
             // Faz um update deste usuario no banco, agora ira constar seu novo saldo
             update();
         }
@@ -159,6 +166,15 @@ public class User {
                 update();
                 // Esta acao comprada foi vendida, entao deleta esta acao do banco de dados
                 myStock.delete();
+                // Cria o historico a ser inserido
+                PurchaseHistory purchaseHistory = new PurchaseHistory();
+                purchaseHistory.setIdAccount(myStock.getIdAccount());
+                purchaseHistory.setIdStock(myStock.getIdStock());
+                purchaseHistory.setPrice(stock.getLastStockHistory().getCotacao());
+                purchaseHistory.setQuantity(myStock.getQuantity());
+                purchaseHistory.setTransactionType(PurchaseHistory.TRANSACTION_TYPE_SELL);
+                // Insere o historico
+                purchaseHistory.insert();
             }
         }
         // Retorna a acao
