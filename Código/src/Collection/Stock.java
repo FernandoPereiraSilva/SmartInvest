@@ -187,7 +187,7 @@ public class Stock {
         // Cria um criterio para consulta
         Criteria criteriaStock = new Criteria();
         // Insere este papel para consulta
-        criteriaStock.addCriteria("papel", this, "getPaper");
+        criteriaStock.addCriteria("paper", this, "getPaper");
         // Pega todas as acoes que tenham determinados dados
         ArrayList<Stock> arrayListStock = StockDao.select(criteriaStock);
         // Verifica se esta acao ja existe

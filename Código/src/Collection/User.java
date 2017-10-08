@@ -130,6 +130,8 @@ public class User {
             purchaseHistory.setPrice(stock.getLastStockHistory().getCotacao());
             purchaseHistory.setQuantity(myStock.getQuantity());
             purchaseHistory.setTransactionType(PurchaseHistory.TRANSACTION_TYPE_BUY);
+            purchaseHistory.setSourceType(PurchaseHistory.SOURCE_TYPE_ROBOT);
+            purchaseHistory.setDtTransaction(new Date());
             // Insere o historico
             purchaseHistory.insert();
             // Faz um update deste usuario no banco, agora ira constar seu novo saldo
@@ -173,6 +175,8 @@ public class User {
                 purchaseHistory.setPrice(stock.getLastStockHistory().getCotacao());
                 purchaseHistory.setQuantity(myStock.getQuantity());
                 purchaseHistory.setTransactionType(PurchaseHistory.TRANSACTION_TYPE_SELL);
+                purchaseHistory.setSourceType(PurchaseHistory.SOURCE_TYPE_ROBOT);
+                purchaseHistory.setDtTransaction(new Date());
                 // Insere o historico
                 purchaseHistory.insert();
             }

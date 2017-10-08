@@ -1,5 +1,7 @@
 package Collection;
 
+import java.util.Date;
+
 import Annotation.MongoClass;
 import Annotation.MongoField;
 import Annotation.MongoMethodGet;
@@ -29,17 +31,26 @@ public class PurchaseHistory {
     @MongoField(fieldName = "transactionType")
     private String             transactionType;
 
+    @MongoField(fieldName = "sourceType")
+    private String             sourceType;
+
+    @MongoField(fieldName = "dtTransaction")
+    private Date               dtTransaction;
+
     public static final String TRANSACTION_TYPE_BUY  = "Compra";
     public static final String TRANSACTION_TYPE_SELL = "Venda";
+    public static final String SOURCE_TYPE_ROBOT     = "Robô";
 
     /** Metodos contrutores */
-    public PurchaseHistory(String id, String idStock, String idAccount, Long quantity, Double price, String transactionType) {
+    public PurchaseHistory(String id, String idStock, String idAccount, Long quantity, Double price, String transactionType, String sourceType, Date dtTransaction) {
         setId(id);
         setIdStock(idStock);
         setIdAccount(idAccount);
         setQuantity(quantity);
         setPrice(price);
         setTransactionType(transactionType);
+        setSourceType(sourceType);
+        setDtTransaction(dtTransaction);
     }
 
     public PurchaseHistory() {
@@ -76,6 +87,16 @@ public class PurchaseHistory {
         this.transactionType = transactionType;
     }
 
+    @MongoMethodSet(fieldName = "sourceType")
+    public void setSourceType(String sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    @MongoMethodSet(fieldName = "dtTransaction")
+    public void setDtTransaction(Date dtTransaction) {
+        this.dtTransaction = dtTransaction;
+    }
+
     /** Metodos de retorno */
     @MongoMethodGet(fieldName = "_id")
     public String getId() {
@@ -105,6 +126,16 @@ public class PurchaseHistory {
     @MongoMethodGet(fieldName = "transactionType")
     public String getTransactionType() {
         return transactionType;
+    }
+    
+    @MongoMethodGet(fieldName = "sourceType")
+    public String getSourceType() {
+        return sourceType;
+    }
+    
+    @MongoMethodGet(fieldName = "dtTransaction")
+    public Date getDtTransaction() {
+        return dtTransaction;
     }
 
     /** Metodos DAO */
