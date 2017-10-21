@@ -58,8 +58,25 @@ public class Criteria {
             for(Object key : map.keySet()) {
                 // Cria um objeto para armazenar o metodo get que tinha sido guardado antes
                 Method methodGet = (Method) ((Map<String, Object>) map.get(key)).get("get");
-                // Adiciona ao objeto where o nome do atributo presente no mapa pai e o valor do metodo get
-                where.append(key.toString(), methodGet.invoke(((Map<String, Object>) map.get(key)).get("class")));
+                // Obetem o conteudo do campo
+                Object value = methodGet.invoke(((Map<String, Object>) map.get(key)).get("class"));
+                // Verifica se o objeto em questão e um mapa
+                if (value.getClass() == HashMap.class){
+                    // Se for significa que o metodo de construcao do where e diferente
+                    HashMap<Object, Object> mapValue = (HashMap<Object, Object>) value;
+                    // Itera todos os itens do mapa
+                    for(Object keyValue : mapValue.keySet()) {
+                        // Informa que a chave sera composta
+                        key = key + "." + keyValue;
+                        // Insere o valor da chave
+                        value = mapValue.get(keyValue);
+                        // Adiciona ao objeto where o valor
+                        where.append(key.toString(), value);
+                    }
+                }else{
+                    // Adiciona ao objeto where o nome do atributo presente no mapa pai e o valor do metodo get
+                    where.append(key.toString(), value);
+                }
             }
         }
         // Retorna o where

@@ -11,7 +11,7 @@ import Dao.MyStockDao;
 import Util.Criteria;
 
 /** Esta classe serve para tratar os dados das minhas acoes */
-@MongoClass(className = "MyStock")
+@MongoClass(className = "myStocks")
 public class MyStock {
 
     /** Atributos */

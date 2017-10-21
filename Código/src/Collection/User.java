@@ -2,6 +2,7 @@ package Collection;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import Annotation.MongoClass;
@@ -12,7 +13,7 @@ import Dao.UserDao;
 import Util.Criteria;
 
 /** Esta classe serve para tratar os dados das contas */
-@MongoClass(className = "user")
+@MongoClass(className = "users")
 public class User {
 
     /** Atributos */
@@ -61,9 +62,18 @@ public class User {
     }
 
     // Este metodo tem como funcao consultar todas as contas no banco de dados
-    public static ArrayList<User> select() throws Exception {
+    public ArrayList<User> select() throws Exception {
+        // No caso especifico do usuario tem uma regra a mais, so deve listar usuarios que permitem a utilizacao do robo
+        // desta forma esse filtro nao se torna algo variavel que deveria ser utilizado em um metodo que utiliza este
+        // select, deve ser utilizado neste select, independente do criterio utilizado anteriormente
+        if (getProfile() == null){
+            setProfile(new HashMap<>());
+        }
+        getProfile().put("allowRobot", true);
+        Criteria criteria = new Criteria();
+        criteria.addCriteria("profile", this, "getProfile");
         // Faz um select no banco e retorna
-        return UserDao.select(null);
+        return UserDao.select(criteria);
     }
 
     // Este metodo tem como funcao alterar esta conta no banco de dados
@@ -74,7 +84,7 @@ public class User {
 
     /** Metodos principais */
     // Este metodo tem como funcao alterar realizar a compra de uma determinada acao em todas as contas
-    public static void buyStock(Stock stock) throws Exception {
+    public void buyStock(Stock stock) throws Exception {
         // Pega todas as conas no banco de dados
         ArrayList<User> arrayListAccount = select();
         // Varre a lista de contas
@@ -85,7 +95,7 @@ public class User {
     }
 
     // Este metodo tem como funcao alterar realizar a venda de uma determinada acao em todas as contas
-    public static void sellStock(Stock stock) throws Exception {
+    public void sellStock(Stock stock) throws Exception {
         // Pega todas as conas no banco de dados
         ArrayList<User> arrayListAccount = select();
         // Varre a lista de contas
@@ -132,8 +142,15 @@ public class User {
             purchaseHistory.setTransactionType(PurchaseHistory.TRANSACTION_TYPE_BUY);
             purchaseHistory.setSourceType(PurchaseHistory.SOURCE_TYPE_ROBOT);
             purchaseHistory.setDtTransaction(new Date());
-            // Insere o historico
-            purchaseHistory.insert();
+            // Cria o log de compra
+            Log log = new Log();
+            log.setIdAccount(myStock.getIdAccount());
+            log.setSourceType(Log.SOURCE_TYPE_ROBOT);
+            log.setDtLog(new Date());
+            log.setDsLog(myStock.getIdStock());
+            log.setTypeLog(Log.TYPE_LOG_BUY);
+            // Insere o log
+            log.insert();
             // Faz um update deste usuario no banco, agora ira constar seu novo saldo
             update();
         }
@@ -179,6 +196,15 @@ public class User {
                 purchaseHistory.setDtTransaction(new Date());
                 // Insere o historico
                 purchaseHistory.insert();
+                // Cria o log de compra
+                Log log = new Log();
+                log.setIdAccount(myStock.getIdAccount());
+                log.setSourceType(Log.SOURCE_TYPE_ROBOT);
+                log.setDtLog(new Date());
+                log.setDsLog(myStock.getIdStock());
+                log.setTypeLog(Log.TYPE_LOG_SELL);
+                // Insere o log
+                log.insert();
             }
         }
         // Retorna a acao
