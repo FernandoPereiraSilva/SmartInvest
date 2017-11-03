@@ -103,7 +103,7 @@ public class GenericDao {
                         // Esta anotacao contem o nome do campo, verifica se ele e igual ao nome do objeto do mongo
                         if(mongoMethodSet.fieldName().equals(key)) {
                             // Verifica se o tipo do campo origem e long e o do mongo e int
-                            if (document.get(key).getClass().equals(Integer.class)){
+                            if ((document.get(key) != null) && ((Integer.class).equals(document.get(key).getClass()))){
                                 // Se for significa que a tratativa e diferente, entao salva ele de forma customizada
                                 methodsSet.get(i).invoke(classAux, new Long("0" + document.get(key)));
                             }else{
