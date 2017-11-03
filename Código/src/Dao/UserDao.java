@@ -20,7 +20,7 @@ public class UserDao extends GenericDao {
         // Cria uma ArrayList para armazenar os dados
         ArrayList<User> arrayListAccount = new ArrayList<User>();
         // Executa o metodo generico de select
-        ArrayList<Object> arrayListObject = select(User.class, criteria);
+        ArrayList<Object> arrayListObject = select(User.class, criteria, null);
         // Varre todo o retorno do metodo generico
         for(Object object : arrayListObject) {
             // Converte o retorno generico em retorno especifico

@@ -109,39 +109,70 @@ public class User {
     // Este metodo tem como funcao realizar todo o procedimento da compra
     private Stock buy(Stock stock) throws Exception {
         // Pega a cotacao do ultimo registro do historico
-        double cotacao = stock.getLastStockHistory().getCotacao();
+        double cotacao = stock.getStockHistory().get(0).getCotacao();
         // Pega o valor do balanco
         Double balance = ((getProfile().get("balance") == null) ? 0.0 : new Double(getProfile().get("balance") + ""));
         // O usuario so podera gastar metade do seu saldo nestas acoes (para nao gastar tudo em uma unica bolsa),
         // entao ele faz o calculo para saber a quantidade maxima que pode ser comprada
         long numberOfTrades = (long) ((((Double) balance) / 2) / cotacao);
         // Verifica se a quantidade esta maior que o total de acoes disponivel
-        if(numberOfTrades > stock.getLastStockHistory().getNumeroDeAcoes()) {
+        if(numberOfTrades > stock.getStockHistory().get(0).getNumeroDeAcoes()) {
             // Se estiver significa que o usuario em questao pode comprar tudo, entao altera a quantidade para o total de acoes
-            numberOfTrades = stock.getLastStockHistory().getNumeroDeAcoes();
+            numberOfTrades = stock.getStockHistory().get(0).getNumeroDeAcoes();
         }
         // O valor de balanco do usuario sera o valor que tinha subtraido do valor gasto nesta compra
-        getProfile().put("balance", (((Double) balance) - (numberOfTrades * stock.getLastStockHistory().getCotacao())));
+        getProfile().put("balance", (((Double) balance) - (numberOfTrades * stock.getStockHistory().get(0).getCotacao())));
         // Verifica se foi feito alguma compra
         if(numberOfTrades > 0) {
-            // Se tiver sido significa que pode debitar o salod e cadastrar as novas acoes, entao cria
-            // um objeto contendo os dados da acao comprada, informa que a data de compra foi hoje
-            MyStock myStock = new MyStock(null, stock.getId(), getId(), numberOfTrades, new Date(), null);
+            // Cria um objeto contendo os dados da compra
+            MyStock myStock = new MyStock(null, stock.getId(), getId(), null, null, null);
+            // E necessario verificar se ele ja possui esta acao, cria um criterio de busca
+            Criteria myStockCriteria = new Criteria();
+            // Insere o id da acao como criterio
+            myStockCriteria.addCriteria("idStock", myStock, "getIdStock");
+            // Insere o id da conta como criterio
+            myStockCriteria.addCriteria("idAccount", myStock, "getIdAccount");
+            // Busca essa compra
+            ArrayList<MyStock> arrayListMyStock = MyStock.select(myStockCriteria);
+            // Verifica se o objeto e nulo
+            if (arrayListMyStock != null){
+                // Se nao for significa que pode fazer o size, entao verifica se existe essa acao
+                if (arrayListMyStock.size() > 0){
+                    // Se for significa que este usuario possui esta acao, entao deve adicionar essa compra a existente
+                    myStock = arrayListMyStock.get(0);
+                    // Adiciona a quantidade de compra
+                    myStock.setQuantity(myStock.getQuantity() + numberOfTrades);
+                }else{
+                    // Se nao for significa que este usuario ainda nao possui esta acao, entao cria uma
+                    myStock = new MyStock(null, stock.getId(), getId(), numberOfTrades, new Date(), null);
+                }
+            }else{
+                // Se nao for significa que este usuario ainda nao possui esta acao, entao cria uma
+                myStock = new MyStock(null, stock.getId(), getId(), numberOfTrades, new Date(), null);
+            }
             // Altera o numero de acoes desta bolsa, informando que agora o saldo e o total menos a quantidade comprada
-            stock.getLastStockHistory().setNumeroDeAcoes(stock.getLastStockHistory().getNumeroDeAcoes() - numberOfTrades);
+            stock.getStockHistory().get(0).setNumeroDeAcoes(stock.getStockHistory().get(0).getNumeroDeAcoes() - numberOfTrades);
             // Atualiza o historico
-            stock.getLastStockHistory().update();
-            // Insere o registro das minhas acoes
-            myStock.insert();
+            stock.getStockHistory().get(0).update();
+            // Verifica se e um insert ou update
+            if (myStock.getId() != null){
+                // Realiza uma alteracao no banco de dados
+                myStock.update();
+            }else{
+                // Realiza uma insercao no banco de dados
+                myStock.insert();
+            }
             // Cria o historico a ser inserido
             PurchaseHistory purchaseHistory = new PurchaseHistory();
             purchaseHistory.setIdAccount(myStock.getIdAccount());
             purchaseHistory.setIdStock(myStock.getIdStock());
-            purchaseHistory.setPrice(stock.getLastStockHistory().getCotacao());
-            purchaseHistory.setQuantity(myStock.getQuantity());
+            purchaseHistory.setPrice(stock.getStockHistory().get(0).getCotacao());
+            purchaseHistory.setQuantity(numberOfTrades);
             purchaseHistory.setTransactionType(PurchaseHistory.TRANSACTION_TYPE_BUY);
             purchaseHistory.setSourceType(PurchaseHistory.SOURCE_TYPE_ROBOT);
             purchaseHistory.setDtTransaction(new Date());
+            // Insere o historico
+            purchaseHistory.insert();
             // Cria o log de compra
             Log log = new Log();
             log.setIdAccount(myStock.getIdAccount());
@@ -174,13 +205,13 @@ public class User {
             if(stock.getId().equals(myStock.getIdStock())) {
                 // Se for significa que deve ser vendida, entao pega o valor da ultima cotacao e multiplica pala quantidade,
                 // isso ira retornar o valor total de lucro desta acao
-                double newValue = myStock.getQuantity() * stock.getLastStockHistory().getCotacao();
+                double newValue = myStock.getQuantity() * stock.getStockHistory().get(0).getCotacao();
                 // Soma a quantidade vendida ao total de acoes deste dia
-                stock.getLastStockHistory().setNumeroDeAcoes(stock.getLastStockHistory().getNumeroDeAcoes() + myStock.getQuantity());
+                stock.getStockHistory().get(0).setNumeroDeAcoes(stock.getStockHistory().get(0).getNumeroDeAcoes() + myStock.getQuantity());
                 // Faz um update guardando os dados da acao
-                stock.getLastStockHistory().update();
+                stock.getStockHistory().get(0).update();
                 // Altera o saldo deste usuario, informa que seu saldo sera o que ja tinha com o lucro obtido
-                getProfile().put("balance", (((Double) getProfile().get("balance")) + newValue));
+                getProfile().put("balance", (new Double("0" + getProfile().get("balance")) + newValue));
                 // Realiza a alteracao deste usuario no banco de dados
                 update();
                 // Esta acao comprada foi vendida, entao deleta esta acao do banco de dados
@@ -189,7 +220,7 @@ public class User {
                 PurchaseHistory purchaseHistory = new PurchaseHistory();
                 purchaseHistory.setIdAccount(myStock.getIdAccount());
                 purchaseHistory.setIdStock(myStock.getIdStock());
-                purchaseHistory.setPrice(stock.getLastStockHistory().getCotacao());
+                purchaseHistory.setPrice(stock.getStockHistory().get(0).getCotacao());
                 purchaseHistory.setQuantity(myStock.getQuantity());
                 purchaseHistory.setTransactionType(PurchaseHistory.TRANSACTION_TYPE_SELL);
                 purchaseHistory.setSourceType(PurchaseHistory.SOURCE_TYPE_ROBOT);

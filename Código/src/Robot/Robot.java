@@ -23,29 +23,45 @@ public class Robot {
     /** Metodos principais */
     // Este metodo tem como funcao executar o algoritmo genetico
     public int doGenetic(Stock stock) {
-        // Cria um valor de fechamento
-        double previousClose = 0;
+        // Cria um valor de fechamento da pontuacao fundamentalista
+        double previousClosePoints = 0;
+        // Cria um valor de fechamento da cotacao
+        double previousCloseAction = 0;
         // Cria uma velocidade
         double velocity = 0;
         // Varre todo o historico desta acao
         for(StockHistory stockHistory : stock.getStockHistory()) {
             // Informa que a pontuacao de abertura e a pontuacao deste historico
-            Double currentClose = stockHistory.getPoints();
+            Double currentClosePoints = stockHistory.getPoints();
+            // Informa que a cotacao de abertura e a cotacao deste historico
+            Double currentCloseAction = stockHistory.getCotacao();
             // Verifica se teve uma pontuacao de fechamento
-            if(previousClose > 0) {
+            if(previousClosePoints > 0) {
                 // Se tiver significa que pode ter ocorrido uma variacao, entao pega o valor que mudou
-                Double change = ((currentClose == null) ? 0.0 : Util.formatDecimalScale((currentClose - previousClose), 2));
+                Double changePoints = ((currentClosePoints == null) ? 0.0 : Util.formatDecimalScale((currentClosePoints - previousClosePoints), 2));
                 // Pega a porcentagem de mudanca
-                double changePercent = Util.formatDecimalScale((change / previousClose * 10), 2);
+                double changePercentPoints = Util.formatDecimalScale((changePoints / previousClosePoints * 10), 2);
                 // Pega a velocidade de decaimento desta acao nesses dois dias
-                double decayedVelocity = velocity / Config.getVelocityDecay();
+                double decayedVelocityPoints = velocity / Config.getVelocityDecay();
                 // Grava a velocidade
-                velocity = Util.formatDecimalScale((decayedVelocity + changePercent), 2);
+                velocity = Util.formatDecimalScale((decayedVelocityPoints + changePercentPoints), 2);
             }
+            if(previousCloseAction > 0) {
+                // Se tiver significa que pode ter ocorrido uma variacao, entao pega o valor que mudou
+                Double changeAction = ((currentCloseAction == null) ? 0.0 : Util.formatDecimalScale((currentCloseAction - previousCloseAction), 2));
+                // Pega a porcentagem de mudanca
+                double changePercentAction = Util.formatDecimalScale((changeAction / previousCloseAction * 10), 2);
+                // Pega a velocidade de decaimento desta acao nesses dois dias
+                double decayedVelocityAction = velocity / Config.getVelocityDecay();
+                // Grava a velocidade
+                velocity += Util.formatDecimalScale((decayedVelocityAction + changePercentAction), 2);
+            }
+            // Informa que o valor de fechamento sera este valor de abertura para realizar uma nova analise de velocidade
+            previousClosePoints = ((currentClosePoints == null) ? 0 : currentClosePoints);
+            // Informa que o valor de fechamento sera este valor de abertura para realizar uma nova analise de velocidade
+            previousCloseAction = ((currentCloseAction == null) ? 0 : currentCloseAction);
             // Informa que este historico teve velocidade de decaimento ou crescimento x
             stockHistory.setVelocity(velocity);
-            // Informa que o valor de fechamento sera este valor de abertura para realizar uma nova analise de velocidade
-            previousClose = ((currentClose == null) ? 0 : currentClose);
         }
         // Cria uma populacao vazia
         Population population = null;

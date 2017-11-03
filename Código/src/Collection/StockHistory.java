@@ -13,6 +13,7 @@ import Annotation.MongoMethodGet;
 import Annotation.MongoMethodSet;
 import Dao.StockHistoryDao;
 import Util.Criteria;
+import Util.OrderBy;
 
 /** Esta classe serve para tratar os dados das acoes */
 @MongoClass(className = "stockHistory")
@@ -679,8 +680,8 @@ public class StockHistory {
     }
 
     // Este metodo tem como funcao consultar todo o historico de uma determinada acao
-    public ArrayList<StockHistory> select(Criteria criteriaStockHistory) throws Exception {
-        return StockHistoryDao.select(criteriaStockHistory);
+    public ArrayList<StockHistory> select(Criteria criteriaStockHistory, OrderBy orderByStockHistory) throws Exception {
+        return StockHistoryDao.select(criteriaStockHistory, orderByStockHistory);
     }
 
     /** Metodos auxiliares */

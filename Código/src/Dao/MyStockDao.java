@@ -20,7 +20,7 @@ public class MyStockDao extends GenericDao {
         // Cria uma ArrayList para armazenar os dados
         ArrayList<MyStock> arrayListStock = new ArrayList<MyStock>();
         // Executa o metodo generico de select
-        ArrayList<Object> arrayListObject = select(MyStock.class, criteria);
+        ArrayList<Object> arrayListObject = select(MyStock.class, criteria, null);
         // Varre todo o retorno do metodo generico
         for(Object object : arrayListObject) {
             // Converte o retorno generico em retorno especifico

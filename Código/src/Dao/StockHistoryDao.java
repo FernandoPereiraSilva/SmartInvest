@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Collection.StockHistory;
 import Util.Criteria;
+import Util.OrderBy;
 
 /** Esta classe serve para tratar as informacoes no banco de dados */
 public class StockHistoryDao extends GenericDao {
@@ -16,11 +17,11 @@ public class StockHistoryDao extends GenericDao {
     }
 
     // Este metodo tem como funcao retornar o historico pela acao
-    public static ArrayList<StockHistory> select(Criteria criteria) throws Exception {
+    public static ArrayList<StockHistory> select(Criteria criteria, OrderBy orderBy) throws Exception {
         // Cria uma ArrayList para armazenar os dados
         ArrayList<StockHistory> arrayListStockHistory = new ArrayList<StockHistory>();
         // Executa o metodo generico de select
-        ArrayList<Object> arrayListObject = select(StockHistory.class, criteria);
+        ArrayList<Object> arrayListObject = select(StockHistory.class, criteria, orderBy);
         // Varre todo o retorno do metodo generico
         for(Object object : arrayListObject) {
             // Converte o retorno generico em retorno especifico

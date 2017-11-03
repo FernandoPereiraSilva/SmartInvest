@@ -112,7 +112,7 @@ public class Strategy {
     /** Metodos principais */
     // Este metodo tem como funcao gerar uma estrategia partindo de dois pais
     public void initialize(Strategy parent1, Strategy parent2) {
-        // Verre todos os parametros desta estrategia
+        // Verre todos os parametros da estrategia filha
         for(Object key : getParameters().keySet()) {
             // Pega o valor do parent1
             double parent1Value = (Double) parent1.getParameters().get(key);
@@ -139,7 +139,7 @@ public class Strategy {
             double mutation_rate = Config.getMutationMaxRate() * Math.random();
             // O valor completo sera a soma do anterior mais a multiplicacao da direcao, taxa de mutacao e valor anterior
             double fullValue = (previousValue + (direction * mutation_rate * previousValue));
-            // Altera o valor do anterior do parametro
+            // Altera o valor anterior do parametro
             getParameters().put(key, Util.formatDecimalScale(fullValue, 2));
         }
     }

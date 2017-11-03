@@ -20,6 +20,7 @@ import Annotation.MongoMethodGet;
 import Annotation.MongoMethodSet;
 import Dao.StockDao;
 import Util.Criteria;
+import Util.OrderBy;
 
 /** Esta classe serve para tratar os dados das acoes */
 @MongoClass(className = "stocks")
@@ -211,12 +212,16 @@ public class Stock {
             StockHistory stockHistory = new StockHistory();
             // Insere o identificador desta acao
             stockHistory.setIdStock(stock.getId());
+            // Cria um order by de historico
+            OrderBy orderByStockHistory = new OrderBy();
+            // Informa que devera ser listado por data decrescente
+            orderByStockHistory.addOrderBy("dataDaUltimaCotacao", OrderBy.ORDER_BY_DESC);
             // Cria um criterio de historico
             Criteria criteriaStockHistory = new Criteria();
             // Insere no criterio o identificador desta acao
             criteriaStockHistory.addCriteria("idStock", stockHistory, "getIdStock");
             // Insere nesta acao o historico retornado do banco de dados
-            stock.setStockHistory(stockHistory.select(criteriaStockHistory));
+            stock.setStockHistory(stockHistory.select(criteriaStockHistory, orderByStockHistory));
         }
         // Retorna a lista de acoes
         return arrayListStock;

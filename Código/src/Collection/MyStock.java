@@ -27,10 +27,7 @@ public class MyStock {
     @MongoField(fieldName = "quantity")
     private Long   quantity;
 
-    @MongoField(fieldName = "dateBuy")
     private Date   dateBuy;
-
-    @MongoField(fieldName = "dateSell")
     private Date   dateSell;
 
     /** Metodos contrutores */
@@ -67,12 +64,10 @@ public class MyStock {
         this.quantity = quantity;
     }
 
-    @MongoMethodSet(fieldName = "dateBuy")
     public void setDateBuy(Date dateBuy) {
         this.dateBuy = dateBuy;
     }
 
-    @MongoMethodSet(fieldName = "dateSell")
     public void setDateSell(Date dateSell) {
         this.dateSell = dateSell;
     }
@@ -98,12 +93,10 @@ public class MyStock {
         return quantity;
     }
 
-    @MongoMethodGet(fieldName = "dateBuy")
     public Date getDateBuy() {
         return dateBuy;
     }
 
-    @MongoMethodGet(fieldName = "dateSell")
     public Date getDateSell() {
         return dateSell;
     }
@@ -117,7 +110,7 @@ public class MyStock {
 
     // Este metodo tem como funcao consultar todas as relacoes por acoes no banco de dados
     public static ArrayList<MyStock> select(Criteria criteria) throws Exception {
-        // Consolta os dados no banco de dados e retorna
+        // Consulta os dados no banco de dados e retorna
         return MyStockDao.select(criteria);
     }
 

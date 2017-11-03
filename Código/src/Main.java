@@ -24,12 +24,18 @@ public class Main {
             ArrayList<Stock> arrayListStock = FundamentalistAnalysis.execute(Stock.select());
             // Varre todas as acoes
             for(Stock stock : arrayListStock) {
-                // Pega o ultimo historico
-                StockHistory stockHistory = stock.getLastStockHistory();
-                // Guarda neste historico a pontuacao atual
-                stockHistory.setPoints(stock.getPoints());
-                // Altera no banco de dados esse historico
-                stockHistory.update();
+                // Verifica se existe um historico para ser analisado
+                if (stock.getStockHistory() != null){
+                    // Verifica se existe pelo menos um dado neste historico
+                    if (stock.getStockHistory().size() > 0){
+                        // Pega o ultimo historico
+                        StockHistory stockHistory = stock.getStockHistory().get(0);
+                        // Guarda neste historico a pontuacao atual
+                        stockHistory.setPoints(stock.getPoints());
+                        // Altera no banco de dados esse historico
+                        stockHistory.update();
+                    }
+                }
             }
             // Varre todas as acoes
             for(Stock stock : arrayListStock) {
@@ -56,7 +62,7 @@ public class Main {
             }
         }
         catch(Exception e) {
-            // Cria o log de compra
+            // Cria o log de erro
             Log log = new Log();
             log.setIdAccount("");
             log.setSourceType(Log.SOURCE_TYPE_ROBOT);

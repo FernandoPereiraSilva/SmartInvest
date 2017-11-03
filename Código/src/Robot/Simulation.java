@@ -123,11 +123,11 @@ public class Simulation {
             }
             // Verifica se a direcao de negociacao foi alterada
             if(tradeDirection != 0) {
-                // Se foi significa que ocorreu uma negociacao, realiza os calculos para saber a acao de negociacao
+                // Se foi significa que ocorreu uma negociacao, realiza os calculos para mensurar negociacao
                 double tradeAction = Util.formatDecimalScale((((Double) strategy.getParameters().get("buyVolume")) / ((Double) stock.getStockHistory().get(i).getCotacao())) * tradeDirection, 2);
                 // Executa o metodo de negociacao
                 trade(tradeAction, stock.getStockHistory().get(i), stock.getPaper());
-                // Adiciona ao historico de compras do robo a negociacao
+                // Adiciona a negociacao ao historico de compras do robo
                 getTradeHistory().add(tradeVerb + " " + stock.getPaper() + ". Velocidade em: " + stock.getStockHistory().get(i).getVelocity() + ". Acao: " + tradeAction + ". Data: " + stock.getStockHistory().get(i).getDataDaUltimaCotacao());
             }
         }
@@ -146,7 +146,7 @@ public class Simulation {
             // Se for significa que pode realizar a negociacao, entao altera o acao de negociacao
             tradeAction = cash / ((Double) stockHistory.getCotacao());
         }
-        // Verifica se as partes mais a acao de negociacao e maior que 0
+        // Verifica se as partes mais a acao de negociacao e menor que 0
         if(shares + tradeAction < 0) {
             // Se for significa que a acao de negocios e negativa
             tradeAction = shares * -1;
@@ -160,7 +160,7 @@ public class Simulation {
         // Verifica se o saldo e menor que 0
         if(cash < 0) {
             // Se estiver significa que esta sem saldo ou a diferenca e de 1 centavo, entao
-            // verifica se o saldo esta menos de 1 centavo negativo
+            // verifica se o saldo esta menor que 1 centavo negativo
             if(cash > -0.01) {
                 // Se estiver ele leva em consideracao
                 cash = 0;
